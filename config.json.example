@@ -1,0 +1,11 @@
+{
+  "email_username":  "user@example.com",
+  "email_password":  "email-password",
+  "email_host": "server.example.com",
+  "mail_from_address": "user@example.com",
+  "mail_to_address": "[5555555555@vtext.com]",
+  "textenabled" : "True",
+  "door_sensor_pin" : "23",
+  "door_relay_pin" : "18",
+  "city_name" : "Toledo",
+}
