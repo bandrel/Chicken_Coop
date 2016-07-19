@@ -39,6 +39,7 @@ textenabled = config["textenabled"]
 door_sensor_pin = int(config["door_sensor_pin"])
 door_relay_pin = int(config["door_relay_pin"])
 city_name = config["city_name"]
+timezone = config["timezone"]
 
 
 #initilize GPIO
@@ -74,19 +75,20 @@ closedmsg['Subject'] = 'Coop door closed'
 a = Astral()
 a.solar_depression = 'civil'
 city = a[city_name]
-sun = city.sun(date=datetime.date.today(), local=False)
+sun = city.sun(date=datetime.date.today(), local=True)
 
+
+pytz.timezone(timezone)
 try:
     while True:
         door_sensor = GPIO.input(door_sensor_pin)
-        now = datetime.datetime.now(pytz.utc)
-        dusk_today = city.sun(date=datetime.date.today(),local=False)['dusk']
-        dawn_today = city.sun(date=datetime.date.today(),local=False)['dawn']
+        now = datetime.datetime.now(pytz.timezone(timezone))
+        dusk_today = city.sun(date=now,local=True)['dusk']
+        dawn_today = city.sun(date=now,local=True)['dawn']
         tomorrow = datetime.date.today() + datetime.timedelta(days=1)
-        dawn_tomorrow = city.sun(date=tomorrow,local=False)['dawn']
         #check to see if the door should be closed .  If time is between dusk today and dawn tomorrow the door
         # should be closed.
-        if dusk_today < now < dawn_tomorrow:
+        if dusk_today < now or now < dawn_today:
             if door_sensor == 1:
                 current_state = 1
                 print "Close Door"

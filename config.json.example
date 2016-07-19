@@ -8,4 +8,5 @@
   "door_sensor_pin" : "23",
   "door_relay_pin" : "18",
   "city_name" : "Toledo",
+  "timezone" : "US/Eastern"
 }
