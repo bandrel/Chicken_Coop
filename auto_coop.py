@@ -111,10 +111,11 @@ try:
             if current_state == 0:
                 if textenabled:
                     sendtext(mail_from_address, mail_to_address, openmsg)
-                    previous_state = current_state
-                else:
+                previous_state = current_state
+            else:
+                if textenabled:
                     sendtext(mail_from_address, mail_to_address, closedmsg)
-                    previous_state = current_state
+                previous_state = current_state
 except KeyboardInterrupt:
     GPIO.cleanup()
     exit()
