@@ -82,41 +82,34 @@ sun = city.sun(date=datetime.date.today(), local=True)
 pytz.timezone(timezone)
 try:
     while True:
+        time.sleep(1)
         door_sensor = GPIO.input(door_sensor_pin)
         now = datetime.datetime.now(pytz.timezone(timezone))
         dusk_today = city.sun(date=now,local=True)['dusk']
         dawn_today = city.sun(date=now,local=True)['dawn']
-        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
         #check to see if the door should be closed .  If time is between dusk today and dawn tomorrow the door
         # should be closed.
         if dusk_today < now or now < dawn_today:
             if door_sensor == 1:
-                current_state = 1
                 print "Close Door"
                 door_change()
+                if textenabled:
+                    sendtext(mail_from_address, mail_to_address, closedmsg)
             else:
                 print "Door is already Closed" + now.strftime('%H%m')
         #Check to see if the door should be open.  If time is between dawn today and dusk today the door should be
         # open.
         elif dawn_today < now < dusk_today:
             if door_sensor == 0:
-                current_state = 0
                 print "Open Door"
                 door_change()
+                if textenabled:
+                    sendtext(mail_from_address, mail_to_address, openmsg)
             else:
                 print "Door is already Open" + now.strftime('%H%m')
         else:
             print 'Error time not valid'
             quit(1)
-        if current_state != previous_state:
-            if current_state == 0:
-                if textenabled:
-                    sendtext(mail_from_address, mail_to_address, openmsg)
-                previous_state = current_state
-            else:
-                if textenabled:
-                    sendtext(mail_from_address, mail_to_address, closedmsg)
-                previous_state = current_state
 except KeyboardInterrupt:
     GPIO.cleanup()
     exit()
