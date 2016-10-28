@@ -70,7 +70,8 @@ closedmsg = MIMEText('')
 closedmsg['From'] = mail_from_address
 closedmsg['To'] = ", ".join(mail_to_address)
 closedmsg['Subject'] = 'Coop door closed'
-
+if textenabled:
+    sendtext(mail_from_address, mail_to_address, startupmsg)
 #initilize astral object and create sun object
 a = Astral()
 a.solar_depression = 'civil'
