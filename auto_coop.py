@@ -14,7 +14,7 @@ import sys
 def door_change():
     print "Door Changed"
     GPIO.output(door_relay_pin, GPIO.HIGH)
-    time.sleep(10)
+    time.sleep(30)
     GPIO.output(door_relay_pin, GPIO.LOW)
 
 def sendtext(me, you, msg):
